@@ -10,6 +10,7 @@ const homeRoutes = require("./routing/home");
 const { STATUS_CODE } = require("./constants/statusCode");
 const { MENU_LINKS } = require("./constants/navigation");
 const getFileFromAbsolutePath = require("./utils/getFileFromAbsolutePath");
+const Cart = require("./models/cart");
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use("/products", productsRoutes);
 app.use("/logout", logoutRoutes);
 app.use("/kill", killRoutes);
 app.use(homeRoutes);
+
 app.use((request, response) => {
   const { url } = request;
 
@@ -37,8 +39,11 @@ app.use((request, response) => {
     headTitle: "404",
     menuLinks: MENU_LINKS,
     activeLinkPath: "",
+    cartCount: Cart.getProductsQuantity()
   });
+
   logger.getErrorLog(url);
 });
 
 app.listen(PORT);
+

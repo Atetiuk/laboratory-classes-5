@@ -1,9 +1,15 @@
 const express = require("express");
-
-const homeController = require("../controllers/homeController");
-
 const router = express.Router();
+const Cart = require("../models/cart");
+const { MENU_LINKS } = require("../constants/navigation");
 
-router.get("/", homeController.getHomeView);
+router.get("/", (req, res) => {
+  res.render("home", {
+    headTitle: "Home",
+    menuLinks: MENU_LINKS,
+    activeLinkPath: "/",
+    cartCount: Cart.getProductsQuantity()
+  });
+});
 
 module.exports = router;
